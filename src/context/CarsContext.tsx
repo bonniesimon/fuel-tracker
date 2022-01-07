@@ -1,6 +1,7 @@
 import { createContext, FC, useEffect, useReducer } from "react";
 import CarsReducer from "../reducers/CarsReducer";
 import config from "../config/config";
+import useLocalStorage from "../hooks/useLocalStorage";
 import { Divider } from "@chakra-ui/react";
 
 type Fuel = "Diesel" | "Petrol";
@@ -29,7 +30,12 @@ interface CarsStateType{
 const initialState: CarsStateType = {
 	cars: [{
 		id: 0,
-		carName: "",
+		carName: "Logan",
+		fuelType: "Diesel"
+	},
+	{
+		id: 1,
+		carName: "Kwid",
 		fuelType: "Petrol"
 	}],
 	isCarsFetched: false,
@@ -51,8 +57,15 @@ const CarsContext = createContext<{state: CarsStateType, dispatch: Function}>({
 
 const CarsContextProvider: FC = ({children}) => {
 	const [state, dispatch] = useReducer(CarsReducer, initialState);
+
+	const [isDataFetchedLS, setIsDataFetchedLS] = useLocalStorage("isDataFetched", false);
+	const [fetchedDataCache, setFetchedDataCache] = useLocalStorage("fetchedData",initialState);
 	
 	useEffect(() => {
+		if(!isDataFetchedLS){
+			setIsDataFetchedLS(false);
+			setFetchedDataCache(initialState);
+		}
 		const getCarsFromAPI = async (url: string) => {
 			try{
 				const res = await fetch(url);
@@ -63,12 +76,28 @@ const CarsContextProvider: FC = ({children}) => {
 					type: "FETCH_CARS_SUCCESS",
 					payload: data
 				 })
+				setCacheData(data);
 			}catch(e: any){
 				console.log("Error", e);
 			}
 		}
 
-		getCarsFromAPI(config.carsApiUrl);
+		const setCacheData = (data: CarsStateType) => {
+			if(state.isCarsFetched){
+				setFetchedDataCache(data);
+				setIsDataFetchedLS(true);
+			}
+		}
+
+		if(isDataFetchedLS){
+			dispatch({
+				type: "FETCH_CARS_SUCCESS",
+				payload: fetchedDataCache
+			})
+			console.log("Using cached data");
+		}else{
+			getCarsFromAPI(config.carsApiUrl);
+		}
 	}, []);	
 	
 	return(
