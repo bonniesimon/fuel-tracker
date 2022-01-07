@@ -12,6 +12,13 @@ const CarsReducer = (state: CarsStateType, action: any) => {
 				...state,
 				cars : [...state.cars, newTestCar]
 			}
+		case "FETCH_CARS_SUCCESS":
+			const fetchedCars = action.payload;
+			return{
+				...state,
+				isCarsFetched: true,
+				cars: fetchedCars
+			}
 		default: 
 			return{
 				...state
