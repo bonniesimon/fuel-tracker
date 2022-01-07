@@ -1,15 +1,18 @@
 import { Box, Heading, VStack } from "@chakra-ui/react"
+import { CarsContextProvider } from "../context/CarsContext"
 
 const Home = () => {
 	return (
-		<div>
-			<Box>
-				<Heading as="h1">Cars</Heading>		
-				<VStack spacing="4">
+		<CarsContextProvider>
+			<div>
+				<Box>
+					<Heading as="h1">Cars</Heading>		
+					<VStack spacing="4">
 
-				</VStack>
-			</Box>	
-		</div>
+					</VStack>
+				</Box>	
+			</div>
+		</CarsContextProvider>
 	)
 }
 
