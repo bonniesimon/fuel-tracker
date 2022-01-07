@@ -22,6 +22,7 @@ interface CarDetailsType{
 
 interface CarsStateType{
 	cars: CarType[];
+	isCarsFetched: boolean;
 	carDetails: CarDetailsType[];
 }
 
@@ -31,6 +32,7 @@ const initialState: CarsStateType = {
 		carName: "",
 		fuelType: "Petrol"
 	}],
+	isCarsFetched: false,
 	carDetails: [{
 		carID: "",
 		entryDate: "",
