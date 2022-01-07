@@ -54,8 +54,12 @@ const CarsContextProvider: FC = ({children}) => {
 		const getCarsFromAPI = async (url: string) => {
 			try{
 				const res = await fetch(url);
-				const data = await res.json();
-				console.log(data);
+				let data = await res.json();
+				data = data.cars;
+				dispatch({
+					type: "FETCH_CARS_SUCCESS",
+					payload: data
+				 })
 			}catch(e: any){
 				console.log("Error", e);
 			}
