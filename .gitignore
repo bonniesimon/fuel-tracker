@@ -3,6 +3,9 @@
 # config files
 /src/config/config.json
 
+# Todo
+todo.md
+
 # dependencies
 /node_modules
 /.pnp
