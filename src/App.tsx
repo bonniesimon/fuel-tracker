@@ -9,6 +9,7 @@ import {
     theme,
 } from "@chakra-ui/react";
 // Components
+import DefaultLayout from "./components/Layout/DefaultLayout";
 import Home from "./views/Home";
 // Context
 import { CarsContextProvider } from "./context/CarsContext";
@@ -16,7 +17,9 @@ import { CarsContextProvider } from "./context/CarsContext";
 export const App = () => (
     <ChakraProvider theme={theme}>
         <CarsContextProvider>
-            <Home />
+            <DefaultLayout>
+                <Home />
+            </DefaultLayout>
         </CarsContextProvider>
     </ChakraProvider>
 );
