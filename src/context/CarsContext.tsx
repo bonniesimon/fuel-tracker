@@ -6,7 +6,7 @@ import { Divider } from "@chakra-ui/react";
 type Fuel = "Diesel" | "Petrol";
 
 interface CarType{
-	carID: string;
+	id: number;
 	carName: string;
 	fuelType: Fuel;
 }
@@ -28,7 +28,7 @@ interface CarsStateType{
 
 const initialState: CarsStateType = {
 	cars: [{
-		carID: "",
+		id: 0,
 		carName: "",
 		fuelType: "Petrol"
 	}],
@@ -58,6 +58,7 @@ const CarsContextProvider: FC = ({children}) => {
 				const res = await fetch(url);
 				let data = await res.json();
 				data = data.cars;
+				console.log(data);
 				dispatch({
 					type: "FETCH_CARS_SUCCESS",
 					payload: data
