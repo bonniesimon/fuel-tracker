@@ -38,7 +38,7 @@ const initialState: CarsStateType = {
 		carName: "Kwid",
 		fuelType: "Petrol"
 	}],
-	isCarsFetched: false,
+	isCarsFetched: true,
 	carDetails: [{
 		carID: "",
 		entryDate: "",
@@ -60,45 +60,48 @@ const CarsContextProvider: FC = ({children}) => {
 
 	const [isDataFetchedLS, setIsDataFetchedLS] = useLocalStorage("isDataFetched", false);
 	const [fetchedDataCache, setFetchedDataCache] = useLocalStorage("fetchedData",initialState);
-	
-	useEffect(() => {
-		if(!isDataFetchedLS){
-			setIsDataFetchedLS(false);
-			setFetchedDataCache(initialState);
-		}
-		const getCarsFromAPI = async (url: string) => {
-			try{
-				const res = await fetch(url);
-				let data = await res.json();
-				data = data.cars;
-				console.log(data);
-				dispatch({
-					type: "FETCH_CARS_SUCCESS",
-					payload: data
-				 })
-				setCacheData(data);
-			}catch(e: any){
-				console.log("Error", e);
-			}
-		}
 
-		const setCacheData = (data: CarsStateType) => {
-			if(state.isCarsFetched){
-				setFetchedDataCache(data);
-				setIsDataFetchedLS(true);
-			}
-		}
+	/**
+	 * Commented out since Sheety free quota expired.
+	 *  */	
+	// useEffect(() => {
+	// 	if(!isDataFetchedLS){
+	// 		setIsDataFetchedLS(false);
+	// 		setFetchedDataCache(initialState);
+	// 	}
+	// 	const getCarsFromAPI = async (url: string) => {
+	// 		try{
+	// 			const res = await fetch(url);
+	// 			let data = await res.json();
+	// 			data = data.cars;
+	// 			console.log(data);
+	// 			dispatch({
+	// 				type: "FETCH_CARS_SUCCESS",
+	// 				payload: data
+	// 			 })
+	// 			setCacheData(data);
+	// 		}catch(e: any){
+	// 			console.log("Error", e);
+	// 		}
+	// 	}
 
-		if(isDataFetchedLS){
-			dispatch({
-				type: "FETCH_CARS_SUCCESS",
-				payload: fetchedDataCache
-			})
-			console.log("Using cached data");
-		}else{
-			getCarsFromAPI(config.carsApiUrl);
-		}
-	}, []);	
+	// 	const setCacheData = (data: CarsStateType) => {
+	// 		if(state.isCarsFetched){
+	// 			setFetchedDataCache(data);
+	// 			setIsDataFetchedLS(true);
+	// 		}
+	// 	}
+
+	// 	if(isDataFetchedLS){
+	// 		dispatch({
+	// 			type: "FETCH_CARS_SUCCESS",
+	// 			payload: fetchedDataCache
+	// 		})
+	// 		console.log("Using cached data");
+	// 	}else{
+	// 		getCarsFromAPI(config.carsApiUrl);
+	// 	}
+	// }, []);	
 	
 	return(
 		<CarsContext.Provider value={{state, dispatch}}>
