@@ -21,7 +21,7 @@ import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 
 const Links = ['Home'];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+const NavLink = ({ children, path }: { children: ReactNode, path: string }) => (
   <Link
     px={2}
     py={1}
@@ -30,7 +30,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}>
+    href={path}>
     {children}
   </Link>
 );
@@ -58,7 +58,7 @@ export default function WithAction() {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link} path="/">{link}</NavLink>
               ))}
             </HStack>
             {/* <Button
@@ -98,7 +98,7 @@ export default function WithAction() {
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link} path='/'>{link}</NavLink>
               ))}
             </Stack>
           </Box>
