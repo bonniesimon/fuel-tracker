@@ -10,7 +10,7 @@ export default function DefaultLayout(props: any) {
       align="center"
 	  w="100%"
       m="0 auto"
-	  bgColor="blue.50"
+	  bgColor="gray.50"
 	  minHeight="100vh"
 	  color="paragraph"
       {...props}
