@@ -17,8 +17,9 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import FuelEntry from "../components/FuelEntry";
 import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
+import FuelEntry from "../components/FuelEntry";
+import AddFuelEntryForm from "../components/AddFuelEntryForm";
 
 const Car = () => {
 	const {isOpen, onOpen, onClose} = useDisclosure();
@@ -79,6 +80,9 @@ const Car = () => {
 				<ModalContent>
 					<ModalHeader>Add Fuel Entry</ModalHeader>
 					<ModalCloseButton/>
+					<Box p="6">
+						<AddFuelEntryForm/>
+					</Box>
 				</ModalContent>
 			</Modal>
         </Box>
