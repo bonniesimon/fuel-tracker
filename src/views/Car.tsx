@@ -60,8 +60,9 @@ const Car = () => {
                 <IconButton onClick={onOpen} aria-label="Add fuel entry" icon={<AddIcon />} />
             </Flex>
             {carFuelEntries && carFuelEntries?.length > 0 ? (
-                carFuelEntries?.map((fuelEntry) => (
+                carFuelEntries?.map((fuelEntry, index) => (
                     <FuelEntry
+						key={index}
                         carID={fuelEntry.carID}
                         entryDate={fuelEntry.entryDate}
                         amount={fuelEntry.amount}

@@ -17,9 +17,11 @@ const Home = () => {
                     height="xl"
                 >
                     {state.cars.map((car) => (
-                        <Link to={`car/${car.id}`}>
+                        <Link 
+                            key={car.id}
+                            to={`car/${car.id}`}
+                        >
                             <Box
-                                key={car.id}
                                 bgColor="brand.backgroundLight"
                                 boxShadow="sm"
                                 rounded="md"
