@@ -22,7 +22,7 @@ export const App = () => (
             <DefaultLayout>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
-                    <Route path="cars" element={<Car />} />
+                    <Route path="car/:carid" element={<Car/>} />
                 </Routes>
             </DefaultLayout>
         </CarsContextProvider>
