@@ -7,6 +7,7 @@ const CustomTheme = extendTheme({
     brand: {
 		// Palette taken from https://www.happyhues.co/palettes/12
       "background": "#232946",
+      "backgroundLight": "#384068",
       "headline": "#fffffe",
 	  "paragraph": "#b8c1ec",
 	  "secondary" : "#eebbc3",
