@@ -28,7 +28,8 @@ const NavLink = ({ children, path }: { children: ReactNode, path: string }) => (
     rounded={'md'}
     _hover={{
       textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
+      bg: useColorModeValue('brand.paragraph', 'gray.700'),
+      color: "brand.background"
     }}
     href={path}>
     {children}
@@ -40,7 +41,7 @@ export default function WithAction() {
 
   return (
     <>
-      <Box bg={useColorModeValue('blue.700', 'gray.900')} color="pink.50" px={4} w="100%">
+      <Box bg={useColorModeValue('brand.background', 'gray.900')} color="pink.50" px={4} w="100%" mb="6">
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -50,7 +51,7 @@ export default function WithAction() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Text fontSize="xl">Fuel Tracker</Text>
+            <Text fontSize="2xl" color="brand.secondary" fontWeight="black">Fuel Tracker</Text>
           </HStack>
           <Flex alignItems={'center'}>
             <HStack

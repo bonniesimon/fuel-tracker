@@ -10,9 +10,9 @@ export default function DefaultLayout(props: any) {
       align="center"
 	  w="100%"
       m="0 auto"
-	  bgColor="gray.50"
+	  bgColor="brand.background"
 	  minHeight="100vh"
-	  color="paragraph"
+    color="brand.paragraph"
       {...props}
     >
       <Header />
