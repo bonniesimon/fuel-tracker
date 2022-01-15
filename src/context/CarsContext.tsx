@@ -12,8 +12,8 @@ interface CarType{
 	fuelType: Fuel;
 }
 
-interface CarDetailsType{
-	carID: string;
+interface FuelEntryType{
+	carID: number;
 	entryDate: string;
 	amount: number;
 	litres: number;
@@ -24,7 +24,7 @@ interface CarDetailsType{
 interface CarsStateType{
 	cars: CarType[];
 	isCarsFetched: boolean;
-	carDetails: CarDetailsType[];
+	fuelEntries: FuelEntryType[];
 }
 
 const initialState: CarsStateType = {
@@ -39,8 +39,8 @@ const initialState: CarsStateType = {
 		fuelType: "Petrol"
 	}],
 	isCarsFetched: true,
-	carDetails: [{
-		carID: "0",
+	fuelEntries: [{
+		carID: 0,
 		entryDate: "11/01/2022",
 		amount: 1000,
 		litres: 10.68,
@@ -115,4 +115,4 @@ const CarsContextProvider: FC = ({children}) => {
 export {CarsContextProvider};
 
 export default CarsContext;
-export type {CarsStateType, CarDetailsType, CarType};
+export type {CarsStateType, FuelEntryType, CarType};
