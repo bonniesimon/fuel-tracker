@@ -4,7 +4,7 @@ import { FuelEntryType } from "../context/CarsContext"
 
 const FuelEntry: FC<FuelEntryType> = ({carID, amount, kilometerReading, entryDate, litres, pricePerLitre}) => {
 	return (
-		<VStack p="6" w="60%" mx="auto" bgColor="brand.backgroundLight">
+		<VStack p="6" my="5" w="60%" mx="auto" bgColor="brand.backgroundLight">
 			<HStack w="100%" justify="space-between">
 				<Text>{entryDate}</Text>
 				<Text>{kilometerReading} Km</Text>
