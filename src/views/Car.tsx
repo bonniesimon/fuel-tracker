@@ -17,7 +17,8 @@ import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 
 		useEffect(() => {
 			const fuelEntriesOfCarFromState = state.fuelEntries.filter(fuelEntry=> fuelEntry.carID === carid);
-			setCarFuelEntries(fuelEntriesOfCarFromState);	
+			const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState.slice().reverse();
+			setCarFuelEntries(ReversedFuelEntriesOfCarFromState);	
 
 			const carDetailsFromState = state.cars.filter(car => car.id === carid);
 			setCarDetail(carDetailsFromState[0]);
