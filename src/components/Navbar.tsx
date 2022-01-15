@@ -4,7 +4,7 @@ import {
   Flex,
   Avatar,
   HStack,
-  Link,
+  // Link,
   IconButton,
   Button,
   Menu,
@@ -18,11 +18,12 @@ import {
   Text
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import {Link} from 'react-router-dom';
 
 const Links = ['Home'];
 
 const NavLink = ({ children, path }: { children: ReactNode, path: string }) => (
-  <Link
+  <Box
     px={2}
     py={1}
     rounded={'md'}
@@ -31,9 +32,12 @@ const NavLink = ({ children, path }: { children: ReactNode, path: string }) => (
       bg: useColorModeValue('brand.paragraph', 'gray.700'),
       color: "brand.background"
     }}
-    href={path}>
+  >
+  <Link
+    to={path}>
     {children}
   </Link>
+  </Box>
 );
 
 export default function WithAction() {
@@ -51,7 +55,9 @@ export default function WithAction() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Text fontSize="2xl" color="brand.secondary" fontWeight="black">Fuel Tracker</Text>
+            <Link to="/">
+              <Text fontSize="2xl" color="brand.secondary" fontWeight="black">Fuel Tracker</Text>
+            </Link>
           </HStack>
           <Flex alignItems={'center'}>
             <HStack
