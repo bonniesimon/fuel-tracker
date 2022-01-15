@@ -20,8 +20,8 @@ const Home = () => {
                         <Link to={`car/${car.id}`}>
                             <Box
                                 key={car.id}
-                                bgColor="white"
-                                boxShadow="base"
+                                bgColor="brand.backgroundLight"
+                                boxShadow="sm"
                                 rounded="md"
                                 p="6"
                                 my="2"
