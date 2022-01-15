@@ -33,7 +33,8 @@ import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 					<Heading>{carDetail?.carName}</Heading>
 				</VStack>
 				</Center>
-				{carFuelEntries?.map(fuelEntry =>
+				{ carFuelEntries && carFuelEntries?.length > 0 ? 
+				carFuelEntries?.map(fuelEntry =>
 						<FuelEntry
 							carID={fuelEntry.carID}
 							entryDate={fuelEntry.entryDate}
@@ -42,7 +43,12 @@ import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 							litres={fuelEntry.litres}
 							pricePerLitre={fuelEntry.pricePerLitre}
 						/>
-					)}
+					)
+				:
+					<Center>
+						<Text>No Entries to List</Text>
+					</Center>
+				}
 			</Box>
 		)
 	}
