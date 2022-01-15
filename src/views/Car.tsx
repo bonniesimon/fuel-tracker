@@ -1,5 +1,7 @@
+import { Heading, VStack, Text, Box, Center } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
+import FuelEntry from "../components/FuelEntry";
 import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 
 	const Car = () => {
@@ -10,7 +12,7 @@ import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 		}
 		const {state} = useContext(CarsContext);
 
-		const [carDetail, setCarDetail] = useState<CarType[]>();
+		const [carDetail, setCarDetail] = useState<CarType>();
 		const [carFuelEntries, setCarFuelEntries] = useState<FuelEntryType[]>();
 
 		useEffect(() => {
@@ -18,17 +20,29 @@ import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 			setCarFuelEntries(fuelEntriesOfCarFromState);	
 
 			const carDetailsFromState = state.cars.filter(car => car.id === carid);
-			setCarDetail(carDetailsFromState);
+			setCarDetail(carDetailsFromState[0]);
 		}, []);
 
 
 		return (
-			<div>
-				<h1>Hey car page here</h1>	
+			<Box w="80%">
+				<Center my="5">
+				<VStack align="flex-start" justify="center">
+					<Text opacity="0.7">{carDetail?.fuelType}</Text>
+					<Heading>{carDetail?.carName}</Heading>
+				</VStack>
+				</Center>
 				{carFuelEntries?.map(fuelEntry =>
-						<h1 key={fuelEntry.carID}>{fuelEntry.amount}</h1>	
+						<FuelEntry
+							carID={fuelEntry.carID}
+							entryDate={fuelEntry.entryDate}
+							amount={fuelEntry.amount}
+							kilometerReading={fuelEntry.kilometerReading}
+							litres={fuelEntry.litres}
+							pricePerLitre={fuelEntry.pricePerLitre}
+						/>
 					)}
-			</div>
+			</Box>
 		)
 	}
 	
