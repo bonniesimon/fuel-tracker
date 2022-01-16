@@ -1,6 +1,6 @@
-import { CarsStateType, CarType } from "../context/CarsContext";
+import { CarsStateType, CarType, FuelEntryType } from "../context/CarsContext";
 
-const CarsReducer = (state: CarsStateType, action: any) => {
+const CarsReducer = (state: CarsStateType, action: any): CarsStateType => {
 	switch(action.type){
 		case "TEST":
 			const newTestCar: CarType = {
@@ -18,6 +18,17 @@ const CarsReducer = (state: CarsStateType, action: any) => {
 				...state,
 				isCarsFetched: true,
 				cars: fetchedCars
+			}
+		case "ADD_FUEL_ENTRY":
+			const fuelEntry: FuelEntryType = action.payload;
+			// TODO: Implement logic to POST to backend
+			
+			// Assume the following variable is returned 
+			// after successfull insertion into DB
+			const successfullEntryToDB: FuelEntryType = fuelEntry;
+			return{
+				...state,
+				fuelEntries: [...state.fuelEntries, successfullEntryToDB]
 			}
 		default: 
 			return{
