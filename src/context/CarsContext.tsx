@@ -42,7 +42,7 @@ const initialState: CarsStateType = {
 	fuelEntries: [
 		{
 			carID: 0,
-			entryDate: "11/01/2022",
+			entryDate: "1/11/2022",
 			amount: 1000,
 			litres: 10.68,
 			pricePerLitre: 93.63,
@@ -50,7 +50,7 @@ const initialState: CarsStateType = {
 		},
 		{
 			carID: 0,
-			entryDate: "15/01/2022",
+			entryDate: "1/15/2022",
 			amount: 1000,
 			litres: 10.68,
 			pricePerLitre: 93.63,
@@ -58,7 +58,7 @@ const initialState: CarsStateType = {
 		},
 		{
 			carID: 0,
-			entryDate: "17/01/2022",
+			entryDate: "1/17/2022",
 			amount: 1000,
 			litres: 10.68,
 			pricePerLitre: 93.63,
