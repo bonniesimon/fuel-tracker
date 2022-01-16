@@ -1,12 +1,20 @@
 import { Input, Button, VStack } from "@chakra-ui/react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import CarsContext, { FuelEntryType } from "../context/CarsContext";
 
 /**
  * TODO: Implement method to calculate price per litre when entering
  * 	amount and litres 
  */
 
-const AddFuelEntryForm = () => {
+interface IProps{
+    carID: number | undefined;
+}
+
+const AddFuelEntryForm = ({carID}: IProps) => {
+    const {dispatch} = useContext(CarsContext);
+
     const {
         register,
         handleSubmit,
@@ -14,7 +22,11 @@ const AddFuelEntryForm = () => {
     } = useForm();
 
     const onFormSubmit = (data: any) => {
-        console.log(data);
+        const fuelEntryFromForm: FuelEntryType = {carID, ...data};
+        dispatch({
+            type: "ADD_FUEL_ENTRY",
+            payload: fuelEntryFromForm
+        })
     };
 
     return (
