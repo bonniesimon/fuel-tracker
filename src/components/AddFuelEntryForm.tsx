@@ -35,6 +35,7 @@ const AddFuelEntryForm = ({carID}: IProps) => {
                 <Input
                     type="text"
                     placeholder="Enter the Date in dd/mm/yyyy"
+                    value={new Date().toLocaleDateString()}
                     {...register("entryDate", {
                         required: "Please enter name",
                     })}
