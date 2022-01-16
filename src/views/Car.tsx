@@ -35,6 +35,8 @@ const Car = () => {
     const [carFuelEntries, setCarFuelEntries] = useState<FuelEntryType[]>();
 
     useEffect(() => {
+        // TODO: Abstract the below code to Reverse the array into a function since
+        //      it is used in two places.
         const fuelEntriesOfCarFromState = state.fuelEntries.filter(
             (fuelEntry) => fuelEntry.carID === carid
         );
@@ -48,6 +50,16 @@ const Car = () => {
         );
         setCarDetail(carDetailsFromState[0]);
     }, []);
+
+    useEffect(() => {
+        const fuelEntriesOfCarFromState = state.fuelEntries.filter(
+            (fuelEntry) => fuelEntry.carID === carid
+        );
+        const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState
+            .slice()
+            .reverse();
+        setCarFuelEntries(ReversedFuelEntriesOfCarFromState);
+    }, [state.fuelEntries])
 
     return (
         <Box w="80%">
@@ -82,7 +94,7 @@ const Car = () => {
 					<ModalHeader>Add Fuel Entry</ModalHeader>
 					<ModalCloseButton/>
 					<Box p="6">
-						<AddFuelEntryForm/>
+						<AddFuelEntryForm carID={carDetail?.id}/>
 					</Box>
 				</ModalContent>
 			</Modal>
