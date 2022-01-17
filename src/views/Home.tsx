@@ -38,7 +38,11 @@ const Home = () => {
                             </Link>
                         ))
                     :
-                        <Center><Badge variant="outline" colorScheme="red">No Cars Present. Create one!</Badge></Center>
+                        <Center>
+                            <Badge variant="outline" colorScheme="red">
+                                No Cars Present. Create one!
+                            </Badge>
+                        </Center>
                     }
                 </Skeleton>
             </VStack>
