@@ -78,17 +78,8 @@ const CarsContext = createContext<{state: CarsStateType, dispatch: Function}>({
 const CarsContextProvider: FC = ({children}) => {
 	const [state, dispatch] = useReducer(CarsReducer, initialState);
 
-	const [isDataFetchedLS, setIsDataFetchedLS] = useLocalStorage("isDataFetched", false);
-	const [fetchedDataCache, setFetchedDataCache] = useLocalStorage("fetchedData",initialState);
 
-	/**
-	 * Commented out since Sheety free quota expired.
-	 *  */	
 	useEffect(() => {
-		// if(!isDataFetchedLS){
-		// 	setIsDataFetchedLS(false);
-		// 	setFetchedDataCache(initialState);
-		// }
 		const getCarsFromAPI = async (url: string) => {
 			try{
 				const res = await fetch(url);
@@ -103,28 +94,10 @@ const CarsContextProvider: FC = ({children}) => {
 					type: "FETCH_CARS_SUCCESS",
 					payload: carDataFormated
 				 })
-				// setCacheData(data);
 			}catch(e: any){
 				console.error("Error", e);
 			}
 		}
-
-		// const setCacheData = (data: CarsStateType) => {
-		// 	if(state.isCarsFetched){
-		// 		setFetchedDataCache(data);
-		// 		setIsDataFetchedLS(true);
-		// 	}
-		// }
-
-		// if(isDataFetchedLS){
-		// 	dispatch({
-		// 		type: "FETCH_CARS_SUCCESS",
-		// 		payload: fetchedDataCache
-		// 	})
-		// 	console.log("Using cached data");
-		// }else{
-		// 	getCarsFromAPI(config.carsApiUrl);
-		// }
 
 		getCarsFromAPI(`${config.backendUrl}/api/car/all`);
 	}, []);	
