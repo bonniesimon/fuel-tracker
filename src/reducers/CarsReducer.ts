@@ -1,6 +1,8 @@
 import { CarsStateType, CarType, FuelEntryType } from "../context/CarsContext";
+import config from '../config/config';
 
 const CarsReducer = (state: CarsStateType, action: any): CarsStateType => {
+	let fuelEntry: FuelEntryType;
 	switch(action.type){
 		case "TEST":
 			const newTestCar: CarType = {
@@ -20,7 +22,7 @@ const CarsReducer = (state: CarsStateType, action: any): CarsStateType => {
 				cars: fetchedCars
 			}
 		case "ADD_FUEL_ENTRY":
-			const fuelEntry: FuelEntryType = action.payload;
+			fuelEntry = action.payload;
 			// TODO: Implement logic to POST to backend
 			
 			// Assume the following variable is returned 
@@ -30,6 +32,26 @@ const CarsReducer = (state: CarsStateType, action: any): CarsStateType => {
 				...state,
 				fuelEntries: [...state.fuelEntries, successfullEntryToDB]
 			}
+		case "FETCH_FUEL_ENTRY_BY_CARID":
+			const carID: string = action.payload;
+			// let fetchedData;
+			// const fetchDataFromAPI = async () => {
+			// 	const res = await fetch(`${config.backendUrl}/api/fuelentry/${carID}`);
+			// 	fetchedData = await res.json();
+			// }
+			
+			// fetchDataFromAPI();
+			// console.log(fetchedData);
+			return {
+				...state
+			}
+		case "FETCH_FUEL_ENTRY_BY_CARID_SUCCESS":
+			fuelEntry = action.payload;
+			return {
+				...state,
+				fuelEntries: [fuelEntry, ...state.fuelEntries]
+			}
+
 		default: 
 			return{
 				...state
