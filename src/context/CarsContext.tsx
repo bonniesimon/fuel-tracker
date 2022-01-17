@@ -82,44 +82,45 @@ const CarsContextProvider: FC = ({children}) => {
 	/**
 	 * Commented out since Sheety free quota expired.
 	 *  */	
-	// useEffect(() => {
-	// 	if(!isDataFetchedLS){
-	// 		setIsDataFetchedLS(false);
-	// 		setFetchedDataCache(initialState);
-	// 	}
-	// 	const getCarsFromAPI = async (url: string) => {
-	// 		try{
-	// 			const res = await fetch(url);
-	// 			let data = await res.json();
-	// 			data = data.cars;
-	// 			console.log(data);
-	// 			dispatch({
-	// 				type: "FETCH_CARS_SUCCESS",
-	// 				payload: data
-	// 			 })
-	// 			setCacheData(data);
-	// 		}catch(e: any){
-	// 			console.log("Error", e);
-	// 		}
-	// 	}
+	useEffect(() => {
+		// if(!isDataFetchedLS){
+		// 	setIsDataFetchedLS(false);
+		// 	setFetchedDataCache(initialState);
+		// }
+		const getCarsFromAPI = async (url: string) => {
+			try{
+				const res = await fetch(url);
+				let data = await res.json();
+				console.log(data);
+				// dispatch({
+				// 	type: "FETCH_CARS_SUCCESS",
+				// 	payload: data
+				//  })
+				// setCacheData(data);
+			}catch(e: any){
+				console.error("Error", e);
+			}
+		}
 
-	// 	const setCacheData = (data: CarsStateType) => {
-	// 		if(state.isCarsFetched){
-	// 			setFetchedDataCache(data);
-	// 			setIsDataFetchedLS(true);
-	// 		}
-	// 	}
+		// const setCacheData = (data: CarsStateType) => {
+		// 	if(state.isCarsFetched){
+		// 		setFetchedDataCache(data);
+		// 		setIsDataFetchedLS(true);
+		// 	}
+		// }
 
-	// 	if(isDataFetchedLS){
-	// 		dispatch({
-	// 			type: "FETCH_CARS_SUCCESS",
-	// 			payload: fetchedDataCache
-	// 		})
-	// 		console.log("Using cached data");
-	// 	}else{
-	// 		getCarsFromAPI(config.carsApiUrl);
-	// 	}
-	// }, []);	
+		// if(isDataFetchedLS){
+		// 	dispatch({
+		// 		type: "FETCH_CARS_SUCCESS",
+		// 		payload: fetchedDataCache
+		// 	})
+		// 	console.log("Using cached data");
+		// }else{
+		// 	getCarsFromAPI(config.carsApiUrl);
+		// }
+
+		getCarsFromAPI(`${config.backendUrl}/api/car/all`);
+	}, []);	
 	
 	return(
 		<CarsContext.Provider value={{state, dispatch}}>
