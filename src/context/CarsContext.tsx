@@ -28,16 +28,17 @@ interface CarsStateType{
 }
 
 const initialState: CarsStateType = {
-	cars: [{
-		id: 0,
-		carName: "Logan",
-		fuelType: "Diesel"
-	},
-	{
-		id: 1,
-		carName: "Kwid",
-		fuelType: "Petrol"
-	}],
+	cars: [],
+	// [{
+	// 	id: 0,
+	// 	carName: "Logan",
+	// 	fuelType: "Diesel"
+	// },
+	// {
+	// 	id: 1,
+	// 	carName: "Kwid",
+	// 	fuelType: "Petrol"
+	// }],
 	isCarsFetched: true,
 	fuelEntries: [
 		{
