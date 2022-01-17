@@ -1,4 +1,4 @@
-import { Box, Container, Heading, Skeleton, VStack } from "@chakra-ui/react";
+import { Badge, Box, Center, Container, Heading, Skeleton, VStack } from "@chakra-ui/react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import CarsContext from "../context/CarsContext";
@@ -6,6 +6,7 @@ import { CarsContextProvider } from "../context/CarsContext";
 
 const Home = () => {
     const { state } = useContext(CarsContext);
+    // console.log(state.cars);
     return (
         <VStack w="80%" minHeight="100%" align="center" justify="center">
             <Heading as="h1">Cars</Heading>
@@ -16,25 +17,29 @@ const Home = () => {
                     my={2}
                     height="xl"
                 >
-                    {state.cars.map((car) => (
-                        <Link 
-                            key={car.id}
-                            to={`car/${car.id}`}
-                        >
-                            <Box
-                                bgColor="brand.backgroundLight"
-                                boxShadow="sm"
-                                rounded="md"
-                                p="6"
-                                my="2"
-                                _hover={{
-                                    boxShadow: "lg",
-                                }}
+                    {state.cars && state.cars.length > 0 ?
+                        state.cars.map((car) => (
+                            <Link 
+                                key={car.id}
+                                to={`car/${car.id}`}
                             >
-                                {car.carName}
-                            </Box>
-                        </Link>
-                    ))}
+                                <Box
+                                    bgColor="brand.backgroundLight"
+                                    boxShadow="sm"
+                                    rounded="md"
+                                    p="6"
+                                    my="2"
+                                    _hover={{
+                                        boxShadow: "lg",
+                                    }}
+                                >
+                                    {car.carName}
+                                </Box>
+                            </Link>
+                        ))
+                    :
+                        <Center><Badge variant="outline" colorScheme="red">No Cars Present. Create one!</Badge></Center>
+                    }
                 </Skeleton>
             </VStack>
         </VStack>
