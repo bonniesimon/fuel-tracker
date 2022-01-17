@@ -21,6 +21,8 @@ import { useParams } from "react-router-dom";
 import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 import FuelEntry from "../components/FuelEntry";
 import AddFuelEntryForm from "../components/AddFuelEntryForm";
+import config from "../config/config";
+import { convertApiDataToFuelType } from "../utils/serialize";
 
 const Car = () => {
 	const {isOpen, onOpen, onClose} = useDisclosure();
@@ -39,10 +41,26 @@ const Car = () => {
         // TODO: Abstract the below code to Reverse the array into a function since
         //      it is used in two places.
 
-        dispatch({
-            type: "FETCH_FUEL_ENTRY_BY_CARID",
-            payload: carid
-        });
+        const fetchDataFromAPI = async (carid: string) => {
+            const res = await fetch(`${config.backendUrl}/api/fuelentry/${carid}`);
+            if(res.status >= 200 && res.status <= 299){
+                const jsonResponse = await res.json();
+                const fuelEntryDataFormatted: FuelEntryType[] = convertApiDataToFuelType(jsonResponse);
+                dispatch({
+                    type: "FETCH_FUEL_ENTRY_BY_CARID_SUCCESS",
+                    payload: fuelEntryDataFormatted
+                });
+            }else{
+                console.error("Fetching network resource failed");
+            }
+        }
+
+        fetchDataFromAPI(carid);
+
+        // dispatch({
+        //     type: "FETCH_FUEL_ENTRY_BY_CARID",
+        //     payload: carid
+        // });
         // const fuelEntriesOfCarFromState = state.fuelEntries.filter(
         //     (fuelEntry) => fuelEntry.carID === carid
         // );
@@ -92,7 +110,7 @@ const Car = () => {
             ) : (
                 <Center>
                     <Badge variant="outline" colorScheme="red">
-                        No Cars Present. Create one!
+                        No Entries Present. Create one!
                     </Badge>
                 </Center>
             )}
