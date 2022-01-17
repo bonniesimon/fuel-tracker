@@ -91,12 +91,22 @@ const CarsContextProvider: FC = ({children}) => {
 		const getCarsFromAPI = async (url: string) => {
 			try{
 				const res = await fetch(url);
-				let data = await res.json();
-				console.log(data);
-				// dispatch({
-				// 	type: "FETCH_CARS_SUCCESS",
-				// 	payload: data
-				//  })
+				let results = await res.json();
+
+				/**
+				 * Done to convert the api result to the CarType
+				 */
+				const carDataFormated: CarType[] = results.map((result: any) => {
+					return {
+						id: result._id,
+						carName: result.carName,
+						fuelType: result.fuelType
+					}
+				})
+				dispatch({
+					type: "FETCH_CARS_SUCCESS",
+					payload: carDataFormated
+				 })
 				// setCacheData(data);
 			}catch(e: any){
 				console.error("Error", e);
