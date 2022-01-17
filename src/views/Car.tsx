@@ -12,7 +12,8 @@ import {
 	ModalOverlay,
 	ModalContent,
 	ModalCloseButton,
-	ModalHeader
+	ModalHeader,
+    Badge
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
@@ -29,7 +30,7 @@ const Car = () => {
     if (params.carid !== undefined) {
         carid = params.carid;
     }
-    const { state } = useContext(CarsContext);
+    const { state, dispatch } = useContext(CarsContext);
 
     const [carDetail, setCarDetail] = useState<CarType>();
     const [carFuelEntries, setCarFuelEntries] = useState<FuelEntryType[]>();
@@ -37,13 +38,18 @@ const Car = () => {
     useEffect(() => {
         // TODO: Abstract the below code to Reverse the array into a function since
         //      it is used in two places.
-        const fuelEntriesOfCarFromState = state.fuelEntries.filter(
-            (fuelEntry) => fuelEntry.carID === carid
-        );
-        const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState
-            .slice()
-            .reverse();
-        setCarFuelEntries(ReversedFuelEntriesOfCarFromState);
+
+        dispatch({
+            type: "FETCH_FUEL_ENTRY_BY_CARID",
+            payload: carid
+        });
+        // const fuelEntriesOfCarFromState = state.fuelEntries.filter(
+        //     (fuelEntry) => fuelEntry.carID === carid
+        // );
+        // const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState
+        //     .slice()
+        //     .reverse();
+        // setCarFuelEntries(ReversedFuelEntriesOfCarFromState);
 
         const carDetailsFromState = state.cars.filter(
             (car) => car.id === carid
@@ -51,15 +57,15 @@ const Car = () => {
         setCarDetail(carDetailsFromState[0]);
     }, []);
 
-    useEffect(() => {
-        const fuelEntriesOfCarFromState = state.fuelEntries.filter(
-            (fuelEntry) => fuelEntry.carID === carid
-        );
-        const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState
-            .slice()
-            .reverse();
-        setCarFuelEntries(ReversedFuelEntriesOfCarFromState);
-    }, [state.fuelEntries])
+    // useEffect(() => {
+    //     const fuelEntriesOfCarFromState = state.fuelEntries.filter(
+    //         (fuelEntry) => fuelEntry.carID === carid
+    //     );
+    //     const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState
+    //         .slice()
+    //         .reverse();
+    //     setCarFuelEntries(ReversedFuelEntriesOfCarFromState);
+    // }, [state.fuelEntries])
 
     return (
         <Box w="80%">
@@ -85,7 +91,9 @@ const Car = () => {
                 ))
             ) : (
                 <Center>
-                    <Text>No Entries to List</Text>
+                    <Badge variant="outline" colorScheme="red">
+                        No Cars Present. Create one!
+                    </Badge>
                 </Center>
             )}
 			<Modal isOpen={isOpen} onClose={onClose} isCentered>
