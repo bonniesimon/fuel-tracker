@@ -9,7 +9,7 @@ import CarsContext, { FuelEntryType } from "../context/CarsContext";
  */
 
 interface IProps{
-    carID: number | undefined;
+    carID: string | undefined;
 }
 
 const AddFuelEntryForm = ({carID}: IProps) => {

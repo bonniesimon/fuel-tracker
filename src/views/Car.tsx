@@ -24,10 +24,10 @@ import AddFuelEntryForm from "../components/AddFuelEntryForm";
 const Car = () => {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 
-    let carid: number;
+    let carid: string;
     const params = useParams();
     if (params.carid !== undefined) {
-        carid = parseInt(params.carid);
+        carid = params.carid;
     }
     const { state } = useContext(CarsContext);
 

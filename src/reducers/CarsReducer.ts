@@ -4,7 +4,7 @@ const CarsReducer = (state: CarsStateType, action: any): CarsStateType => {
 	switch(action.type){
 		case "TEST":
 			const newTestCar: CarType = {
-				id: 111,
+				id:"1231jkhjk",
 				carName: "Logan",
 				fuelType: "Diesel"
 			}

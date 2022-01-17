@@ -8,13 +8,13 @@ import {convertApiDataToCarType} from "../utils/serialize";
 type Fuel = "Diesel" | "Petrol";
 
 interface CarType{
-	id: number;
+	id: string;
 	carName: string;
 	fuelType: Fuel;
 }
 
 interface FuelEntryType{
-	carID: number;
+	carID: string;
 	entryDate: string;
 	amount: number;
 	litres: number;
