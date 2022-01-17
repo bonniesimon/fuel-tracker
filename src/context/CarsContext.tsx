@@ -3,6 +3,7 @@ import CarsReducer from "../reducers/CarsReducer";
 import config from "../config/config";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { Divider } from "@chakra-ui/react";
+import {convertApiDataToCarType} from "../utils/serialize";
 
 type Fuel = "Diesel" | "Petrol";
 
@@ -94,15 +95,10 @@ const CarsContextProvider: FC = ({children}) => {
 				let results = await res.json();
 
 				/**
-				 * Done to convert the api result to the CarType
+				 * Done to convert the api data to the CarType
 				 */
-				const carDataFormated: CarType[] = results.map((result: any) => {
-					return {
-						id: result._id,
-						carName: result.carName,
-						fuelType: result.fuelType
-					}
-				})
+				const carDataFormated: CarType[] = convertApiDataToCarType(results);
+
 				dispatch({
 					type: "FETCH_CARS_SUCCESS",
 					payload: carDataFormated
