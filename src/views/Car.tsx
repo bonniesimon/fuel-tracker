@@ -49,6 +49,18 @@ const Car = () => {
         setCarDetail(carDetailsFromState[0]);
     }, []);
 
+    /**
+     * Done to fix the issue of the car name and fuel type missing on refresh
+     */
+    useEffect(() => {
+        const carDetailsFromState = state.cars.filter(
+            (car) => car.id === carid
+        );
+        setCarDetail(carDetailsFromState[0]);
+    }, [state.cars]);
+
+    
+
     return (
         <Box w="80%">
             <Flex w="60%" mx="auto" my="9" align="center">
