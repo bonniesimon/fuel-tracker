@@ -28,7 +28,7 @@ interface CarsStateType{
 
 const initialState: CarsStateType = {
 	cars: [],
-	isCarsFetched: true,
+	isCarsFetched: false,
 	fuelEntries: []
 }
 
