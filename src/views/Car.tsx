@@ -13,77 +13,41 @@ import {
 	ModalContent,
 	ModalCloseButton,
 	ModalHeader,
-    Badge
+    Badge,
+    CircularProgress
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
+import useSWR from "swr";
 import { useParams } from "react-router-dom";
 import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
 import FuelEntry from "../components/FuelEntry";
 import AddFuelEntryForm from "../components/AddFuelEntryForm";
 import config from "../config/config";
 import { convertApiDataToFuelType } from "../utils/serialize";
+import { fetchFuelEntryByCarID } from "../utils/fetchers";
+
 
 const Car = () => {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 
-    let carid: string;
+    let carid: string = '';
     const params = useParams();
     if (params.carid !== undefined) {
         carid = params.carid;
     }
-    const { state, dispatch } = useContext(CarsContext);
+    const { state } = useContext(CarsContext);
 
     const [carDetail, setCarDetail] = useState<CarType>();
-    const [carFuelEntries, setCarFuelEntries] = useState<FuelEntryType[]>();
 
+    const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carid}`;
+    const {data, error} = useSWR(carByIDEndpoint, fetchFuelEntryByCarID); 
     useEffect(() => {
-        // TODO: Abstract the below code to Reverse the array into a function since
-        //      it is used in two places.
-
-        const fetchDataFromAPI = async (carid: string) => {
-            const res = await fetch(`${config.backendUrl}/api/fuelentry/${carid}`);
-            if(res.status >= 200 && res.status <= 299){
-                const jsonResponse = await res.json();
-                const fuelEntryDataFormatted: FuelEntryType[] = convertApiDataToFuelType(jsonResponse);
-                dispatch({
-                    type: "FETCH_FUEL_ENTRY_BY_CARID_SUCCESS",
-                    payload: fuelEntryDataFormatted
-                });
-            }else{
-                console.error("Fetching network resource failed");
-            }
-        }
-
-        fetchDataFromAPI(carid);
-
-        // dispatch({
-        //     type: "FETCH_FUEL_ENTRY_BY_CARID",
-        //     payload: carid
-        // });
-        // const fuelEntriesOfCarFromState = state.fuelEntries.filter(
-        //     (fuelEntry) => fuelEntry.carID === carid
-        // );
-        // const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState
-        //     .slice()
-        //     .reverse();
-        // setCarFuelEntries(ReversedFuelEntriesOfCarFromState);
-
         const carDetailsFromState = state.cars.filter(
             (car) => car.id === carid
         );
         setCarDetail(carDetailsFromState[0]);
     }, []);
-
-    // useEffect(() => {
-    //     const fuelEntriesOfCarFromState = state.fuelEntries.filter(
-    //         (fuelEntry) => fuelEntry.carID === carid
-    //     );
-    //     const ReversedFuelEntriesOfCarFromState = fuelEntriesOfCarFromState
-    //         .slice()
-    //         .reverse();
-    //     setCarFuelEntries(ReversedFuelEntriesOfCarFromState);
-    // }, [state.fuelEntries])
 
     return (
         <Box w="80%">
@@ -95,25 +59,30 @@ const Car = () => {
                 <Spacer />
                 <IconButton onClick={onOpen} aria-label="Add fuel entry" icon={<AddIcon />} />
             </Flex>
-            {carFuelEntries && carFuelEntries?.length > 0 ? (
-                carFuelEntries?.map((fuelEntry, index) => (
-                    <FuelEntry
-						key={index}
-                        carID={fuelEntry.carID}
-                        entryDate={fuelEntry.entryDate}
-                        amount={fuelEntry.amount}
-                        kilometerReading={fuelEntry.kilometerReading}
-                        litres={fuelEntry.litres}
-                        pricePerLitre={fuelEntry.pricePerLitre}
-                    />
-                ))
-            ) : (
-                <Center>
-                    <Badge variant="outline" colorScheme="red">
-                        No Entries Present. Create one!
-                    </Badge>
-                </Center>
-            )}
+            {(!error && !data) ? 
+                <Center><CircularProgress isIndeterminate color="green.500"/></Center>
+            : 
+                (data.length === 0) ?
+                        <Center>
+                            <Badge variant="outline" colorScheme="red">
+                                No Entries Present. Create one!
+                            </Badge>
+                        </Center> 
+                :
+                        convertApiDataToFuelType(data).map((fuelEntry, index) => (
+                            <FuelEntry
+                                key={index}
+                                carID={fuelEntry.carID}
+                                entryDate={fuelEntry.entryDate}
+                                amount={fuelEntry.amount}
+                                kilometerReading={fuelEntry.kilometerReading}
+                                litres={fuelEntry.litres}
+                                pricePerLitre={fuelEntry.pricePerLitre}
+                            />
+                        ))
+                
+            }
+
 			<Modal isOpen={isOpen} onClose={onClose} isCentered>
 				<ModalOverlay/>
 				<ModalContent>
