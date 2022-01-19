@@ -41,7 +41,7 @@ const Car = () => {
     const [carDetail, setCarDetail] = useState<CarType>();
 
     const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carid}`;
-    const {data, error} = useSWR(carByIDEndpoint, fetchFuelEntryByCarID); 
+    const {data,  error} = useSWR(carByIDEndpoint, fetchFuelEntryByCarID); 
     useEffect(() => {
         const carDetailsFromState = state.cars.filter(
             (car) => car.id === carid
@@ -74,14 +74,14 @@ const Car = () => {
             {(!error && !data) ? 
                 <Center><CircularProgress isIndeterminate color="green.500"/></Center>
             : 
-                (data.length === 0) ?
+                (data && data.length === 0) ?
                         <Center>
                             <Badge variant="outline" colorScheme="red">
                                 No Entries Present. Create one!
                             </Badge>
                         </Center> 
                 :
-                        convertApiDataToFuelType(data).map((fuelEntry, index) => (
+                        data.map((fuelEntry: any, index: any) => (
                             <FuelEntry
                                 key={index}
                                 carID={fuelEntry.carID}
