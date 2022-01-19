@@ -1,4 +1,4 @@
-import { Input, Button, VStack } from "@chakra-ui/react";
+import { Input, Button, VStack, useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useSWRConfig } from "swr";
 import config from "../config/config";
@@ -7,7 +7,6 @@ import { FuelEntryType } from "../context/CarsContext";
 /**
  * TODO: Implement method to calculate price per litre when entering
  * 	amount and litres 
- * TODO: Implement popup box to indicate that the entry has been successfully entered.
  */
 
 interface IProps{
@@ -16,6 +15,7 @@ interface IProps{
 }
 
 const AddFuelEntryForm = ({carID, onClose}: IProps) => {
+    const toast = useToast();
     const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
 
     const {mutate} = useSWRConfig();
@@ -43,7 +43,21 @@ const AddFuelEntryForm = ({carID, onClose}: IProps) => {
                 body: JSON.stringify(fuelEntryFromForm)
             })  
             const jsonResponse = await updateFuelEntryResponse.json();
+            toast({
+                title: "Fuel Entry Added.",
+                description: "We added the fuel entry for you.",
+                status: "success",
+                duration: 3000,
+                isClosable: true
+            });
         }catch(e: any){
+            toast({
+                title: "Error While Adding Fuel Entry.",
+                description: "Some error occured. Entry not updated.",
+                status: "error",
+                duration: 3000,
+                isClosable: true
+            });
             console.log(e);
         }
         mutate(carByIDEndpoint);
