@@ -1,11 +1,13 @@
 import { Input, Button, VStack } from "@chakra-ui/react";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import CarsContext, { FuelEntryType } from "../context/CarsContext";
+import { useSWRConfig } from "swr";
+import config from "../config/config";
+import { FuelEntryType } from "../context/CarsContext";
 
 /**
  * TODO: Implement method to calculate price per litre when entering
  * 	amount and litres 
+ * TODO: Implement popup box to indicate that the entry has been successfully entered.
  */
 
 interface IProps{
@@ -13,7 +15,9 @@ interface IProps{
 }
 
 const AddFuelEntryForm = ({carID}: IProps) => {
-    const {dispatch} = useContext(CarsContext);
+    const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
+
+    const {mutate} = useSWRConfig();
 
     const {
         register,
@@ -21,12 +25,27 @@ const AddFuelEntryForm = ({carID}: IProps) => {
         formState: { errors },
     } = useForm();
 
-    const onFormSubmit = (data: any) => {
-        const fuelEntryFromForm: FuelEntryType = {carID, ...data};
-        dispatch({
-            type: "ADD_FUEL_ENTRY",
-            payload: fuelEntryFromForm
-        })
+    const onFormSubmit = async (data: any) => {
+        let {amount, kilometerReading, litres, pricePerLitre} = data;
+        amount = parseInt(amount);
+        kilometerReading = parseInt(kilometerReading);
+        litres = parseFloat(litres);
+        pricePerLitre = parseFloat(pricePerLitre);
+        const updatedFormDataDataTypes = {...data, amount, kilometerReading, litres, pricePerLitre};
+        const fuelEntryFromForm: FuelEntryType = {carID, ...updatedFormDataDataTypes};
+
+        mutate(carByIDEndpoint, async (currentData: any) => { return [fuelEntryFromForm, ...currentData] } ,false);
+        try{
+            const updateFuelEntryResponse = await fetch(`${config.backendUrl}/api/fuelentry/create`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(fuelEntryFromForm)
+            })  
+            const jsonResponse = await updateFuelEntryResponse.json();
+        }catch(e: any){
+            console.log(e);
+        }
+        mutate(carByIDEndpoint);
     };
 
     return (
