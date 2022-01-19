@@ -101,7 +101,7 @@ const Car = () => {
 					<ModalHeader>Add Fuel Entry</ModalHeader>
 					<ModalCloseButton/>
 					<Box p="6">
-						<AddFuelEntryForm carID={carDetail?.id}/>
+						<AddFuelEntryForm carID={carDetail?.id} onClose={onClose}/>
 					</Box>
 				</ModalContent>
 			</Modal>

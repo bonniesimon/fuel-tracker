@@ -12,9 +12,10 @@ import { FuelEntryType } from "../context/CarsContext";
 
 interface IProps{
     carID: string | undefined;
+    onClose: () => void;
 }
 
-const AddFuelEntryForm = ({carID}: IProps) => {
+const AddFuelEntryForm = ({carID, onClose}: IProps) => {
     const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
 
     const {mutate} = useSWRConfig();
@@ -46,6 +47,7 @@ const AddFuelEntryForm = ({carID}: IProps) => {
             console.log(e);
         }
         mutate(carByIDEndpoint);
+        onClose();
     };
 
     return (
