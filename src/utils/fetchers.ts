@@ -8,7 +8,6 @@ const fetchFuelEntryByCarID = async (url: string): Promise<any>=> {
 	// return await res.json();
 	const json = await res.json();
 	const formattedData = convertApiDataToFuelType(json);
-	console.log(formattedData);
 	return new Promise((resolve, reject) => {
 		resolve(formattedData);
 	})
