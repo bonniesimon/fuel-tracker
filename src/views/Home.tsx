@@ -2,11 +2,9 @@ import { Badge, Box, Center, Container, Heading, Skeleton, VStack } from "@chakr
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import CarsContext from "../context/CarsContext";
-import { CarsContextProvider } from "../context/CarsContext";
 
 const Home = () => {
     const { state } = useContext(CarsContext);
-    // console.log(state.cars);
     return (
         <VStack w="80%" minHeight="100%" align="center" justify="center">
             <Heading as="h1">Cars</Heading>
@@ -15,7 +13,7 @@ const Home = () => {
                     isLoaded={state.isCarsFetched}
                     noOfLines={2}
                     my={2}
-                    height="xl"
+                    height="sm"
                 >
                     {state.cars && state.cars.length > 0 ?
                         state.cars.map((car) => (
