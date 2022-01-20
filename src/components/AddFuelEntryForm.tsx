@@ -1,5 +1,4 @@
 import { Input, Button, VStack, useToast } from "@chakra-ui/react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSWRConfig } from "swr";
 import config from "../config/config";
@@ -16,10 +15,6 @@ interface IProps{
 }
 
 const AddFuelEntryForm = ({carID, onClose}: IProps) => {    
-    const [amountState, setAmountState] = useState<number | null>(null);
-    const [litreState, setLitreState] = useState<number | null>(null);
-    const [pricePerLitreState, setPricePerLitreState] = useState<number | null>(null);
-
     const toast = useToast();
     const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
 
@@ -69,37 +64,6 @@ const AddFuelEntryForm = ({carID, onClose}: IProps) => {
         onClose();
     };
 
-    const calcPrice = (e: any, type: string) => {
-        switch(type){
-            case 'amount':
-                console.log("Inside amount case");
-                setAmountState(parseInt(e.target.value));
-                if(litreState !== null){
-                    setAmountState(parseInt(e.target.value));
-                    // @ts-ignore
-                    const pricePerLitreValue = amountState/litreState;
-                    setPricePerLitreState(pricePerLitreValue);
-                }else{
-                }
-                break;
-            case 'litre':
-                console.log("Inside litre case");
-                setAmountState(parseInt(e.target.value));
-                if(amountState !== null){
-                    setLitreState(parseFloat(e.target.value));
-                    // @ts-ignore
-                    const pricePerLitreValue = amountState/litreState;
-                    setPricePerLitreState(pricePerLitreValue);
-                }else{
-                    setLitreState(parseFloat(e.target.value));
-                }
-                break;
-            default:
-                break;
-        }
-
-        // return value;
-    }
 
     return (
         <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -118,7 +82,6 @@ const AddFuelEntryForm = ({carID, onClose}: IProps) => {
                     {...register("amount", {
                         required: "Please enter amount in ₹",
                         maxLength: 5,
-                        onChange: (e) => calcPrice(e, "amount")
                     })}
                 />
                 <Input
@@ -127,15 +90,12 @@ const AddFuelEntryForm = ({carID, onClose}: IProps) => {
                     placeholder="Enter Litres in L"
                     {...register("litres", {
                         required: "Please enter litres in L",
-                        onChange: (e) => calcPrice(e, "litre")
                     })}
                 />
                 <Input
                     type="number"
                     step="any"
                     placeholder="Enter Price per litre in ₹"
-                    // defaultValue={pricePerLitreState !== null ? pricePerLitreState : ''}
-                    value={pricePerLitreState !== null ? pricePerLitreState : ''}
                     {...register("pricePerLitre", {
                         required: "Please enter amount in ₹",
                     })}
