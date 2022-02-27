@@ -1,13 +1,16 @@
 import {
-    Box,
+    Button,
     Circle,
     Divider,
+    Flex,
     HStack,
     Spacer,
     Text,
     VStack,
 } from "@chakra-ui/react";
 import { FC } from "react";
+import { FaRegEdit } from "react-icons/fa";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { FuelEntryType } from "../context/CarsContext";
 
 const FuelEntry: FC<FuelEntryType> = ({
@@ -26,9 +29,9 @@ const FuelEntry: FC<FuelEntryType> = ({
             mx="auto"
             bgColor="brand.backgroundLight"
             boxShadow="base"
-			_hover={{
-				boxShadow: "2xl"
-			}}
+            _hover={{
+                boxShadow: "2xl",
+            }}
         >
             <HStack w="100%" justify="space-between">
                 <Text>{entryDate}</Text>
@@ -42,6 +45,32 @@ const FuelEntry: FC<FuelEntryType> = ({
                 </VStack>
             </Circle>
             <Text>₹{pricePerLitre} / L</Text>
+            <Flex w="100%">
+                <Button
+                    px="3"
+                    py="1"
+                    variant="outline"
+                    bgColor="brand.backgroundLight"
+                    color="brand.primary"
+                    _hover={{
+                        bgColor: "gray.400",
+                        color: "brand.background",
+                    }}
+                    rightIcon={<FaRegEdit/>}
+                >
+                    Edit
+                </Button>
+                <Spacer />
+                <Button
+                    px="3"
+                    py="1"
+                    variant="outline"
+                    colorScheme="red"
+                    leftIcon={<DeleteIcon />}
+                >
+                    Delete
+                </Button>
+            </Flex>
         </VStack>
     );
 };
