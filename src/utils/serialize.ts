@@ -17,6 +17,7 @@ const convertApiDataToCarType = (apiData: any): CarType[] => {
 const convertApiDataToFuelType = (apiData: any): FuelEntryType[] => {
 	const fuelEntryDataFormatted: FuelEntryType[] = apiData.map((data: any) => {
 		return{
+			id: data._id,
 			carID: data.carID,
 			entryDate: data.entryDate,
 			amount: data.amount,

@@ -14,6 +14,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { FuelEntryType } from "../context/CarsContext";
 
 const FuelEntry: FC<FuelEntryType> = ({
+    id,
     carID,
     amount,
     kilometerReading,

@@ -81,9 +81,10 @@ const Car = () => {
                             </Badge>
                         </Center> 
                 :
-                        data.map((fuelEntry: any, index: any) => (
+                        data.map((fuelEntry: any) => (
                             <FuelEntry
-                                key={index}
+                                key={fuelEntry.id}
+                                id={fuelEntry.id}
                                 carID={fuelEntry.carID}
                                 entryDate={fuelEntry.entryDate}
                                 amount={fuelEntry.amount}
