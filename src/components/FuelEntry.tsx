@@ -7,21 +7,61 @@ import {
     Spacer,
     Text,
     VStack,
+    useToast
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FuelEntryType } from "../context/CarsContext";
+import config from "../config/config";
+import { useSWRConfig } from "swr";
 
 const FuelEntry: FC<FuelEntryType> = ({
-    id,
-    carID,
-    amount,
-    kilometerReading,
-    entryDate,
-    litres,
-    pricePerLitre,
-}) => {
+        id,
+        carID,
+        amount,
+        kilometerReading,
+        entryDate,
+        litres,
+        pricePerLitre,
+    }) => {
+    const toast = useToast();
+    const {mutate} = useSWRConfig();
+
+    const deleteFuelEntryHandler = async (fuelEntryID: string) => {
+        const deleteFuelEntryEndPoint: string = `${config.backendUrl}/api/fuelentry/delete/${fuelEntryID}`;
+        const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
+        
+        mutate(carByIDEndpoint, async(currentData: any) => {
+            const filteredData: any = currentData.filter((fuelEntry:any) => fuelEntry.id !== id);
+            return [...filteredData];
+        }, false);
+
+        try {
+            const deleteFuelEntryResponse = await fetch(deleteFuelEntryEndPoint, {
+                method: 'DELETE'
+            });
+
+            const jsonResponse = deleteFuelEntryResponse.json();
+            toast({
+                title: "Fuel Entry Deleted",
+                description: "We have deleted the fuel entry",
+                status: "success",
+                duration: 3000,
+                isClosable: true
+            })
+        } catch (e: any) {
+            toast({
+                title: "Fuel entry cannot be deleted",
+                description: "Some error",
+                status: "error",
+                duration: 3000,
+                isClosable: true
+            })
+        }
+        mutate(carByIDEndpoint);
+    };
+
     return (
         <VStack
             p="6"
@@ -68,6 +108,7 @@ const FuelEntry: FC<FuelEntryType> = ({
                     variant="outline"
                     colorScheme="red"
                     leftIcon={<DeleteIcon />}
+                    onClick={() => deleteFuelEntryHandler(id)}
                 >
                     Delete
                 </Button>
