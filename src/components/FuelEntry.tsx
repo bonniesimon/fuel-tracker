@@ -7,40 +7,60 @@ import {
     Spacer,
     Text,
     VStack,
-    useToast
+    useToast,
+    useDisclosure,
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogBody,
+    AlertDialogCloseButton,
+    AlertDialogHeader,
+    AlertDialogOverlay,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { FuelEntryType } from "../context/CarsContext";
 import config from "../config/config";
 import { useSWRConfig } from "swr";
+import { FocusableElement } from "@chakra-ui/utils";
 
 const FuelEntry: FC<FuelEntryType> = ({
-        id,
-        carID,
-        amount,
-        kilometerReading,
-        entryDate,
-        litres,
-        pricePerLitre,
-    }) => {
+    id,
+    carID,
+    amount,
+    kilometerReading,
+    entryDate,
+    litres,
+    pricePerLitre,
+}) => {
     const toast = useToast();
-    const {mutate} = useSWRConfig();
+    const { mutate } = useSWRConfig();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef: any = useRef();
 
     const deleteFuelEntryHandler = async (fuelEntryID: string) => {
         const deleteFuelEntryEndPoint: string = `${config.backendUrl}/api/fuelentry/delete/${fuelEntryID}`;
         const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
-        
-        mutate(carByIDEndpoint, async(currentData: any) => {
-            const filteredData: any = currentData.filter((fuelEntry:any) => fuelEntry.id !== id);
-            return [...filteredData];
-        }, false);
+
+        mutate(
+            carByIDEndpoint,
+            async (currentData: any) => {
+                const filteredData: any = currentData.filter(
+                    (fuelEntry: any) => fuelEntry.id !== id
+                );
+                return [...filteredData];
+            },
+            false
+        );
 
         try {
-            const deleteFuelEntryResponse = await fetch(deleteFuelEntryEndPoint, {
-                method: 'DELETE'
-            });
+            const deleteFuelEntryResponse = await fetch(
+                deleteFuelEntryEndPoint,
+                {
+                    method: "DELETE",
+                }
+            );
 
             const jsonResponse = deleteFuelEntryResponse.json();
             toast({
@@ -48,16 +68,16 @@ const FuelEntry: FC<FuelEntryType> = ({
                 description: "We have deleted the fuel entry",
                 status: "success",
                 duration: 3000,
-                isClosable: true
-            })
+                isClosable: true,
+            });
         } catch (e: any) {
             toast({
                 title: "Fuel entry cannot be deleted",
                 description: "Some error",
                 status: "error",
                 duration: 3000,
-                isClosable: true
-            })
+                isClosable: true,
+            });
         }
         mutate(carByIDEndpoint);
     };
@@ -97,7 +117,7 @@ const FuelEntry: FC<FuelEntryType> = ({
                         bgColor: "gray.400",
                         color: "brand.background",
                     }}
-                    rightIcon={<FaRegEdit/>}
+                    rightIcon={<FaRegEdit />}
                 >
                     Edit
                 </Button>
@@ -108,10 +128,37 @@ const FuelEntry: FC<FuelEntryType> = ({
                     variant="outline"
                     colorScheme="red"
                     leftIcon={<DeleteIcon />}
-                    onClick={() => deleteFuelEntryHandler(id)}
+                    onClick={onOpen}
                 >
                     Delete
                 </Button>
+
+                <AlertDialog
+                    motionPreset="slideInBottom"
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                    isOpen={isOpen}
+                    isCentered
+                >
+                    <AlertDialogOverlay />
+
+                    <AlertDialogContent>
+                        <AlertDialogHeader>Delete?</AlertDialogHeader>
+                        <AlertDialogCloseButton />
+                        <AlertDialogBody>
+                            Are you sure you want to delete the fuel entry?<br/>
+                            This action cannot be reverted!
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                                No
+                            </Button>
+                            <Button colorScheme="red" ml={3} onClick={() => deleteFuelEntryHandler(id)}>
+                                Yes
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </Flex>
         </VStack>
     );
