@@ -10,6 +10,7 @@ interface CarType{
 }
 
 interface FuelEntryType{
+	id: string;
 	carID: string;
 	entryDate: string;
 	amount: number;
