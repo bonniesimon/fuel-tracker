@@ -24,6 +24,7 @@ import { FuelEntryType } from "../context/CarsContext";
 import config from "../config/config";
 import { useSWRConfig } from "swr";
 import { FocusableElement } from "@chakra-ui/utils";
+import EditFuelEntryModal from "./EditFuelEntryModal";
 
 const FuelEntry: FC<FuelEntryType> = ({
     id,
@@ -37,6 +38,7 @@ const FuelEntry: FC<FuelEntryType> = ({
     const toast = useToast();
     const { mutate } = useSWRConfig();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const {isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose} = useDisclosure();
     const cancelRef: any = useRef();
 
     const deleteFuelEntryHandler = async (fuelEntryID: string) => {
@@ -118,9 +120,11 @@ const FuelEntry: FC<FuelEntryType> = ({
                         color: "brand.background",
                     }}
                     rightIcon={<FaRegEdit />}
+                    onClick={onEditOpen}
                 >
                     Edit
                 </Button>
+                <EditFuelEntryModal isOpen={isEditOpen} onClose={onEditClose}/>
                 <Spacer />
                 <Button
                     px="3"
