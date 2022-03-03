@@ -3,6 +3,9 @@
 # config files
 /src/config/config.json
 
+# env files
+.env
+
 # Todo
 todo.md
 
