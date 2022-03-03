@@ -16,7 +16,7 @@ interface IProps{
 
 const AddFuelEntryForm = ({carID, onClose}: IProps) => {    
     const toast = useToast();
-    const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
+    const carByIDEndpoint: string = `${config.API_URL}/api/fuelentry/${carID}`;
 
     const {mutate} = useSWRConfig();
 
@@ -37,7 +37,7 @@ const AddFuelEntryForm = ({carID, onClose}: IProps) => {
 
         mutate(carByIDEndpoint, async (currentData: any) => { return [fuelEntryFromForm, ...currentData] } ,false);
         try{
-            const updateFuelEntryResponse = await fetch(`${config.backendUrl}/api/fuelentry/create`, {
+            const updateFuelEntryResponse = await fetch(`${config.API_URL}/api/fuelentry/create`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(fuelEntryFromForm)

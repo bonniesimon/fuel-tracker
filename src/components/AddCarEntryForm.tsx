@@ -21,10 +21,10 @@ const AddCarEntryForm = ({onClose}: IProps) => {
 
     const onFormSubmit = async (data: any) => {
 		console.log(data);
-		const getAllCarsEndpoint: string = `${config.backendUrl}/api/car/all`;
+		const getAllCarsEndpoint: string = `${config.API_URL}/api/car/all`;
         mutate(getAllCarsEndpoint, async (currentData: any) => { return [data, ...currentData] } ,false);
         try{
-            const createCarResponse = await fetch(`${config.backendUrl}/api/car/create`, {
+            const createCarResponse = await fetch(`${config.API_URL}/api/car/create`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)

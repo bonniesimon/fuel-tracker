@@ -40,7 +40,7 @@ const Car = () => {
 
     const [carDetail, setCarDetail] = useState<CarType>();
 
-    const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carid}`;
+    const carByIDEndpoint: string = `${config.API_URL}/api/fuelentry/${carid}`;
     const {data,  error} = useSWR(carByIDEndpoint, fetchFuelEntryByCarID); 
     useEffect(() => {
         const carDetailsFromState = state.cars.filter(

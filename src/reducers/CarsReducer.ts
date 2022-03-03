@@ -36,7 +36,7 @@ const CarsReducer = (state: CarsStateType, action: any): CarsStateType => {
 			const carID: string = action.payload;
 			// let fetchedData;
 			// const fetchDataFromAPI = async () => {
-			// 	const res = await fetch(`${config.backendUrl}/api/fuelentry/${carID}`);
+			// 	const res = await fetch(`${config.API_URL}/api/fuelentry/${carID}`);
 			// 	fetchedData = await res.json();
 			// }
 			

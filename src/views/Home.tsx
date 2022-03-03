@@ -28,7 +28,7 @@ const Home = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { dispatch } = useContext(CarsContext);
     const { data, error } = useSWR(
-        `${config.backendUrl}/api/car/all`,
+        `${config.API_URL}/api/car/all`,
         fetchAllCars
     );
     useEffect(() => {

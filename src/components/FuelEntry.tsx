@@ -40,8 +40,8 @@ const FuelEntry: FC<FuelEntryType> = ({
     const cancelRef: any = useRef();
 
     const deleteFuelEntryHandler = async (fuelEntryID: string) => {
-        const deleteFuelEntryEndPoint: string = `${config.backendUrl}/api/fuelentry/delete/${fuelEntryID}`;
-        const carByIDEndpoint: string = `${config.backendUrl}/api/fuelentry/${carID}`;
+        const deleteFuelEntryEndPoint: string = `${config.API_URL}/api/fuelentry/delete/${fuelEntryID}`;
+        const carByIDEndpoint: string = `${config.API_URL}/api/fuelentry/${carID}`;
 
         mutate(
             carByIDEndpoint,
