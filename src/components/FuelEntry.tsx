@@ -124,7 +124,7 @@ const FuelEntry: FC<FuelEntryType> = ({
                 >
                     Edit
                 </Button>
-                <EditFuelEntryModal isOpen={isEditOpen} onClose={onEditClose}/>
+                <EditFuelEntryModal isOpen={isEditOpen} onClose={onEditClose} currentFuelEntry={{id, carID, amount,kilometerReading,entryDate,litres,pricePerLitre}}/>
                 <Spacer />
                 <Button
                     px="3"
