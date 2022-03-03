@@ -1,13 +1,15 @@
-import { Box, Button, Input, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
+import { FuelEntryType } from "../context/CarsContext";
 
 interface Props{
     isOpen: boolean;
     onClose: () => void;
+    currentFuelEntry: FuelEntryType;
 }
 
-const EditFuelEntryModal: FC<Props> = ({isOpen, onClose}) => {
+const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
 	const {
         register,
         handleSubmit,
