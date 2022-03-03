@@ -32,46 +32,70 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
                     
                             <form onSubmit={handleSubmit(onEditFormSubmit)}>
                                 <VStack spacing="25">
-                                    <Input
-                                        type="text"
-                                        placeholder="Enter the Date in dd/mm/yyyy"
-                                        defaultValue={new Date().toLocaleDateString()}
-                                        {...register("entryDate", {
-                                            required: "Please enter name",
-                                        })}
-                                    />
-                                    <Input
-                                        type="number"
-                                        placeholder="Enter Amount in ₹"
-                                        {...register("amount", {
-                                            required: "Please enter amount in ₹",
-                                            maxLength: 5,
-                                        })}
-                                    />
-                                    <Input
-                                        type="number"
-                                        step="any"
-                                        placeholder="Enter Litres in L"
-                                        {...register("litres", {
-                                            required: "Please enter litres in L",
-                                        })}
-                                    />
-                                    <Input
-                                        type="number"
-                                        step="any"
-                                        placeholder="Enter Price per litre in ₹"
-                                        {...register("pricePerLitre", {
-                                            required: "Please enter amount in ₹",
-                                        })}
-                                    />
-                                    <Input
-                                        type="number"
-                                        placeholder="Enter Kilometer Reading in KM"
-                                        {...register("kilometerReading", {
-                                            required: "Please enter Kilometre in KM",
-                                        })}
+                                    <FormControl>
+                                        <FormLabel htmlFor="entryDate">Entry Date</FormLabel>
+                                        <Input
+                                            id="entryDate"
+                                            type="text"
+                                            placeholder="Enter the Date in dd/mm/yyyy"
+                                            defaultValue={currentFuelEntry.entryDate}
+                                            {...register("entryDate", {
+                                                required: "Please enter name",
+                                            })}
                                         />
-                                    <Button type="submit">Submit</Button>
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="amount">Amount</FormLabel>
+                                        <Input
+                                            id="amount"
+                                            type="number"
+                                            placeholder="Enter Amount in ₹"
+                                            defaultValue={currentFuelEntry.amount}
+                                            {...register("amount", {
+                                                required: "Please enter amount in ₹",
+                                                maxLength: 5,
+                                            })}
+                                    />
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="litres">Litres</FormLabel>
+                                        <Input
+                                            id="litres"
+                                            type="number"
+                                            step="any"
+                                            placeholder="Enter Litres in L"
+                                            defaultValue={currentFuelEntry.litres}
+                                            {...register("litres", {
+                                                required: "Please enter litres in L",
+                                            })}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="pricePerLitre">Price Per Litre</FormLabel>
+                                        <Input
+                                            id="pricePerLitre"
+                                            type="number"
+                                            step="any"
+                                            placeholder="Enter Price per litre in ₹"
+                                            defaultValue={currentFuelEntry.pricePerLitre}
+                                            {...register("pricePerLitre", {
+                                                required: "Please enter amount in ₹",
+                                            })}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="kilometerReading">Kilometer Reading</FormLabel>
+                                        <Input
+                                            id="kilometerReading"
+                                            type="number"
+                                            placeholder="Enter Kilometer Reading in KM"
+                                            defaultValue={currentFuelEntry.kilometerReading}
+                                            {...register("kilometerReading", {
+                                                required: "Please enter Kilometre in KM",
+                                            })}
+                                            />
+                                        </FormControl>
+                                    <Button type="submit" disabled>Update</Button>
                                 </VStack>
                             </form>
                         </Box>
