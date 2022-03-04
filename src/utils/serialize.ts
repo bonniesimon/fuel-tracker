@@ -1,6 +1,18 @@
-import { createIdentifier } from "typescript";
+import { createIdentifier, idText } from "typescript";
 import { CarType, FuelEntryType } from "../context/CarsContext";
 
+
+const convertToFuelEntryType = (data: any): FuelEntryType => {
+	return {
+		id: data.id,
+		carID: data.carID,
+		amount: parseInt(data.amount),
+		entryDate: data.entryDate,
+		kilometerReading: parseInt(data.kilometerReading),
+		litres: parseFloat(data.litres),
+		pricePerLitre: parseFloat(data.pricePerLitre)
+	}
+}
 
 const convertApiDataToCarType = (apiData: any): CarType[] => {
 	const carDataFormated: CarType[] = apiData.map((data: any) => {
@@ -30,4 +42,4 @@ const convertApiDataToFuelType = (apiData: any): FuelEntryType[] => {
 	return fuelEntryDataFormatted;
 }
 
-export {convertApiDataToCarType, convertApiDataToFuelType};
+export {convertApiDataToCarType, convertApiDataToFuelType, convertToFuelEntryType};
