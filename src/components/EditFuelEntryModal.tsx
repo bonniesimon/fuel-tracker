@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Input, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack, useToast } from "@chakra-ui/react";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { FuelEntryType } from "../context/CarsContext";
@@ -14,7 +14,9 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: currentFuelEntry
+    });
 
 
 	const onEditFormSubmit = () => {
@@ -38,7 +40,6 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
                                             id="entryDate"
                                             type="text"
                                             placeholder="Enter the Date in dd/mm/yyyy"
-                                            defaultValue={currentFuelEntry.entryDate}
                                             {...register("entryDate", {
                                                 required: "Please enter name",
                                             })}
@@ -50,7 +51,6 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
                                             id="amount"
                                             type="number"
                                             placeholder="Enter Amount in ₹"
-                                            defaultValue={currentFuelEntry.amount}
                                             {...register("amount", {
                                                 required: "Please enter amount in ₹",
                                                 maxLength: 5,
@@ -64,7 +64,6 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
                                             type="number"
                                             step="any"
                                             placeholder="Enter Litres in L"
-                                            defaultValue={currentFuelEntry.litres}
                                             {...register("litres", {
                                                 required: "Please enter litres in L",
                                             })}
@@ -77,7 +76,6 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
                                             type="number"
                                             step="any"
                                             placeholder="Enter Price per litre in ₹"
-                                            defaultValue={currentFuelEntry.pricePerLitre}
                                             {...register("pricePerLitre", {
                                                 required: "Please enter amount in ₹",
                                             })}
