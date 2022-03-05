@@ -18,20 +18,23 @@ const isJsonEqual = (obj1: any, obj2: any): boolean => {
 
 
 
-const jsonDiff = (obj1: any, obj2: any) => {
+const jsonDiff = <T extends Record<string, any>>(obj1: T, obj2: T): Partial<T> | null => {
 	let keys1 = Object.getOwnPropertyNames(obj1);
 	let keys2 = Object.getOwnPropertyNames(obj2);
 
-	let diff: Partial<typeof obj1> = {};
+	let diff: Partial<T> = {};
 
 	// Assuming both the jsons have same fields
 	if(keys1.length !== keys2.length) return null;
 
+	let newDiffPropertyInCurrentObject: Record<string, any>;
 	for(let i: number = 0; i < keys1.length; i++){
-		let key = keys1[i];
+		const key = keys1[i];
 
 		if(obj1[key] !== obj2[key]){
-			diff[key] = obj2[key];
+			newDiffPropertyInCurrentObject = {};
+			newDiffPropertyInCurrentObject[key] = obj2[key];
+			diff = {...diff, ...newDiffPropertyInCurrentObject};
 		}
 	};
 
