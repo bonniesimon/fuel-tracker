@@ -4,6 +4,8 @@ import { useForm, UseFormReset } from "react-hook-form";
 import { FuelEntryType } from "../context/CarsContext";
 import {convertToFuelEntryType} from "../utils/serialize";
 import {isJsonEqual, jsonDiff} from "../utils/jsonDiff";
+import config from "../config/config";
+import { useSWRConfig } from "swr";
 
 interface Props{
     isOpen: boolean;
@@ -28,6 +30,7 @@ const CustomCloseButton: FC<CloseButtonProps> = ({reset, currentFuelEntry, onClo
 }
 
 const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
+    const {mutate} = useSWRConfig();
     const toast = useToast();
 
 	const {
@@ -41,7 +44,8 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
     });
 
 
-	const onEditFormSubmit = (data: any) => {
+	const onEditFormSubmit = async (data: any) => {
+        const carByIDEndpoint: string = `${config.API_URL}/api/fuelentry/${currentFuelEntry.carID}`;
         const editedData: FuelEntryType = convertToFuelEntryType({...data, id: currentFuelEntry.id, carID: currentFuelEntry.carID});
         if(isJsonEqual(currentFuelEntry, editedData)){
             toast({
@@ -55,7 +59,45 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
         }
 
         const diff = jsonDiff(currentFuelEntry, editedData);
-        console.log(diff);
+        if(!isJsonEqual(currentFuelEntry, editedData) && diff !== {}){
+            mutate(carByIDEndpoint, async (currentData: FuelEntryType[]) => {
+                const newData: FuelEntryType[] = currentData.map(data => {
+                    if(data.id !== currentFuelEntry.id) return data;
+                    return {...data, ...diff}
+                });
+                return newData;
+            }, false);
+
+            try{
+                const updateFuelEntryResponse = await fetch(`${config.API_URL}/api/fuelentry/update`,
+                {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id: currentFuelEntry.id, ...diff})
+                });
+                const jsonResponse = updateFuelEntryResponse.json();
+                toast({
+                    title: "Edit successfull",
+                    description: "We have updated the entry",
+                    status: "success",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true
+                });
+            }catch(e: any){
+                toast({
+                    title: "Edit Failed",
+                    description: "Edit was unable to continue",
+                    status: "error",
+                    duration: 3000,
+                    position: "top-right",
+                    isClosable: true
+                }); 
+            }
+
+            mutate(carByIDEndpoint);
+            onClose();
+        }
 	};
 
 
