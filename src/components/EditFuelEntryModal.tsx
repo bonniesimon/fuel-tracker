@@ -2,6 +2,8 @@ import { Box, Button, FormControl, FormLabel, Input, Modal, ModalCloseButton, Mo
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { FuelEntryType } from "../context/CarsContext";
+import {convertToFuelEntryType} from "../utils/serialize";
+import {isJsonEqual, jsonDiff} from "../utils/jsonDiff";
 
 interface Props{
     isOpen: boolean;
@@ -10,6 +12,8 @@ interface Props{
 }
 
 const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
+    const toast = useToast();
+
 	const {
         register,
         handleSubmit,
@@ -19,8 +23,21 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
     });
 
 
-	const onEditFormSubmit = () => {
+	const onEditFormSubmit = (data: any) => {
+        const editedData: FuelEntryType = convertToFuelEntryType({...data, id: currentFuelEntry.id, carID: currentFuelEntry.carID});
+        if(isJsonEqual(currentFuelEntry, editedData)){
+            toast({
+                title: "Update not required",
+                description: "Update is not required since you didn't change any fields",
+                status: "info",
+                position: "top-right",
+                isClosable: true
+            });
+            onClose();
+        }
 
+        const diff = jsonDiff(currentFuelEntry, editedData);
+        console.log(diff);
 	};
 
     return (
@@ -87,13 +104,12 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
                                             id="kilometerReading"
                                             type="number"
                                             placeholder="Enter Kilometer Reading in KM"
-                                            defaultValue={currentFuelEntry.kilometerReading}
                                             {...register("kilometerReading", {
                                                 required: "Please enter Kilometre in KM",
                                             })}
                                             />
                                         </FormControl>
-                                    <Button type="submit" disabled>Update</Button>
+                                    <Button type="submit">Update</Button>
                                 </VStack>
                             </form>
                         </Box>
