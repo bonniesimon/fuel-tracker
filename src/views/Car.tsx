@@ -63,7 +63,7 @@ const Car = () => {
 
     return (
         <Box w="80%">
-            <Flex w="60%" mx="auto" my="9" align="center">
+            <Flex  w={{base: "90%", md: "60%", lg: "40%"}} mx="auto" my="9" align="center">
                 <VStack align="flex-start" justify="center">
                     <Text opacity="0.7">{carDetail?.fuelType}</Text>
                     <Heading>{carDetail?.carName}</Heading>

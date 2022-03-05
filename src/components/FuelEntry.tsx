@@ -88,7 +88,7 @@ const FuelEntry: FC<FuelEntryType> = ({
         <VStack
             p="6"
             my="5"
-            w="60%"
+            w={{base: "90%", md: "60%", lg: "40%"}}
             mx="auto"
             bgColor="brand.backgroundLight"
             boxShadow="base"

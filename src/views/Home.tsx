@@ -40,7 +40,7 @@ const Home = () => {
     }, [data]);
     return (
         <VStack w="80%" minHeight="100%" align="center" justify="center">
-            <Flex w="40%" mx="auto" my="9" align="center">
+            <Flex w={{base: "90%", md: "60%", lg: "40%"}} mx="auto" my="9" align="center">
                 <Heading>Cars</Heading>
                 <Spacer />
                 <IconButton
@@ -49,7 +49,7 @@ const Home = () => {
                     icon={<AddIcon />}
                 />
             </Flex>
-            <VStack w="40%" spacing="4" align="stretch">
+            <VStack w={{base: "90%", md: "60%", lg: "40%"}} spacing="4" align="stretch">
                 {!error && !data ? (
                     <Center>
                         <CircularProgress isIndeterminate color="green.500" />
