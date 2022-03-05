@@ -16,29 +16,27 @@ const isJsonEqual = (obj1: any, obj2: any): boolean => {
 	return true;
 }
 
-interface ObjType{
-	[key: string]: string | number;
-}
 
-const jsonDiff = <T>(obj1: T, obj2: T): Partial<T> => {
+
+const jsonDiff = (obj1: any, obj2: any) => {
 	let keys1 = Object.getOwnPropertyNames(obj1);
 	let keys2 = Object.getOwnPropertyNames(obj2);
 
-	let diff: Partial<T> = {};
+	let diff: Partial<typeof obj1> = {};
 
 	// Assuming both the jsons have same fields
-	if(keys1.length !== keys2.length) return {};
+	if(keys1.length !== keys2.length) return null;
 
 	for(let i: number = 0; i < keys1.length; i++){
 		let key = keys1[i];
 
 		if(obj1[key] !== obj2[key]){
-			console.log("Not equal");
+			diff[key] = obj2[key];
 		}
 	};
 
 
-	return obj1;
+	return diff;
 }
 
 
