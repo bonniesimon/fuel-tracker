@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, FormLabel, Input, Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, VStack, useToast } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Modal, ModalContent, ModalHeader, ModalOverlay, VStack, useToast, CloseButton } from "@chakra-ui/react";
 import { FC } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReset } from "react-hook-form";
 import { FuelEntryType } from "../context/CarsContext";
 import {convertToFuelEntryType} from "../utils/serialize";
 import {isJsonEqual, jsonDiff} from "../utils/jsonDiff";
@@ -11,6 +11,22 @@ interface Props{
     currentFuelEntry: FuelEntryType;
 }
 
+interface CloseButtonProps{
+    reset: UseFormReset<FuelEntryType>;
+    currentFuelEntry: FuelEntryType;
+    onClose: () => void;
+};
+
+const CustomCloseButton: FC<CloseButtonProps> = ({reset, currentFuelEntry, onClose}) => {
+    const handleCloseClick = () => {
+        reset(currentFuelEntry);
+        onClose();
+    }
+    return(
+       <CloseButton onClick={handleCloseClick} position="absolute" top={2} right={3}/>
+    )
+}
+
 const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
     const toast = useToast();
 
@@ -18,6 +34,8 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
         register,
         handleSubmit,
         formState: { errors },
+        reset
+
     } = useForm({
         defaultValues: currentFuelEntry
     });
@@ -40,13 +58,14 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
         console.log(diff);
 	};
 
+
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
 				<ModalOverlay/>
 				<ModalContent>
 					<ModalHeader>Edit Fuel Entry</ModalHeader>
-					<ModalCloseButton/>
+                    <CustomCloseButton reset={reset} currentFuelEntry={currentFuelEntry} onClose={onClose}/>
 					<Box p="6">
                     
                             <form onSubmit={handleSubmit(onEditFormSubmit)}>
