@@ -58,7 +58,7 @@ const EditFuelEntryModal: FC<Props> = ({isOpen, onClose, currentFuelEntry}) => {
             onClose();
         }
 
-        const diff = jsonDiff(currentFuelEntry, editedData);
+        const diff = jsonDiff<FuelEntryType>(currentFuelEntry, editedData);
         if(!isJsonEqual(currentFuelEntry, editedData) && diff !== {}){
             mutate(carByIDEndpoint, async (currentData: FuelEntryType[]) => {
                 const newData: FuelEntryType[] = currentData.map(data => {
