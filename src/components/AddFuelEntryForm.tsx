@@ -70,8 +70,8 @@ const AddFuelEntryForm = ({carID, onClose}: IProps) => {
             <VStack spacing="25">
                 <Input
                     type="text"
-                    placeholder="Enter the Date in dd/mm/yyyy"
-                    defaultValue={new Date().toLocaleDateString()}
+                    placeholder="Enter the Date in yyyy-mm-dd"
+                    defaultValue={new Date().toLocaleDateString("en-CA")}
                     {...register("entryDate", {
                         required: "Please enter name",
                     })}
