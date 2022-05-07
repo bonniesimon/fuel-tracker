@@ -1,5 +1,8 @@
-import { createContext, FC, useReducer } from "react";
+import { createContext, FC, useEffect, useReducer } from "react";
+import useSWR from "swr";
+import config from "../config/config";
 import CarsReducer from "../reducers/CarsReducer";
+import { fetchAllCars } from "../utils/fetchers";
 
 type Fuel = "Diesel" | "Petrol";
 
@@ -40,6 +43,19 @@ const CarsContext = createContext<{state: CarsStateType, dispatch: Function}>({
 const CarsContextProvider: FC = ({children}) => {
 	const [state, dispatch] = useReducer(CarsReducer, initialState);
 	
+	const { data } = useSWR(
+        `${config.API_URL}/api/car/all`,
+        fetchAllCars
+    );
+
+    useEffect(() => {
+        if (!data) return;
+        dispatch({
+            type: "FETCH_CARS_SUCCESS",
+            payload: data,
+        });
+    }, [data]);
+
 	return(
 		<CarsContext.Provider value={{state, dispatch}}>
 			{children}

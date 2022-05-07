@@ -16,28 +16,15 @@ import {
     useDisclosure,
     VStack,
 } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import useSWR from "swr";
 import AddCarEntryForm from "../components/AddCarEntryForm";
-import config from "../config/config";
 import CarsContext, { CarType } from "../context/CarsContext";
-import { fetchAllCars } from "../utils/fetchers";
 
 const Home = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { dispatch } = useContext(CarsContext);
-    const { data, error } = useSWR(
-        `${config.API_URL}/api/car/all`,
-        fetchAllCars
-    );
-    useEffect(() => {
-        if (!data) return;
-        dispatch({
-            type: "FETCH_CARS_SUCCESS",
-            payload: data,
-        });
-    }, [data]);
+    
+    const { state } = useContext(CarsContext);
     return (
         <VStack w="80%" minHeight="100%" align="center" justify="center">
             <Flex w={{base: "90%", md: "60%", lg: "40%"}} mx="auto" my="9" align="center">
@@ -50,12 +37,12 @@ const Home = () => {
                 />
             </Flex>
             <VStack w={{base: "90%", md: "60%", lg: "40%"}} spacing="4" align="stretch">
-                {!error && !data ? (
+                {!state.isCarsFetched && !state.cars? (
                     <Center>
                         <CircularProgress isIndeterminate color="green.500" />
                     </Center>
-                ) : data && data.length > 0 ? (
-                    data.map((car: CarType) => (
+                ) : state.cars && state.cars.length > 0 ? (
+                    state.cars.map((car: CarType) => (
                         <Link key={car.id} to={`car/${car.id}`}>
                             <Box
                                 bgColor="brand.backgroundLight"
