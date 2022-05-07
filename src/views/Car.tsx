@@ -17,14 +17,13 @@ import {
     CircularProgress
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import useSWR from "swr";
 import { useParams } from "react-router-dom";
-import CarsContext, { FuelEntryType, CarType } from "../context/CarsContext";
+import CarsContext from "../context/CarsContext";
 import FuelEntry from "../components/FuelEntry";
 import AddFuelEntryForm from "../components/AddFuelEntryForm";
 import config from "../config/config";
-import { convertApiDataToFuelType } from "../utils/serialize";
 import { fetchFuelEntryByCarID } from "../utils/fetchers";
 
 
@@ -37,29 +36,10 @@ const Car = () => {
         carid = params.carid;
     }
     const { state } = useContext(CarsContext);
-
-    const [carDetail, setCarDetail] = useState<CarType>();
+    const [carDetail] = state.cars.filter(car => car.id === carid);
 
     const carByIDEndpoint: string = `${config.API_URL}/api/fuelentry/${carid}`;
     const {data,  error} = useSWR(carByIDEndpoint, fetchFuelEntryByCarID); 
-    useEffect(() => {
-        const carDetailsFromState = state.cars.filter(
-            (car) => car.id === carid
-        );
-        setCarDetail(carDetailsFromState[0]);
-    }, []);
-
-    /**
-     * Done to fix the issue of the car name and fuel type missing on refresh
-     */
-    useEffect(() => {
-        const carDetailsFromState = state.cars.filter(
-            (car) => car.id === carid
-        );
-        setCarDetail(carDetailsFromState[0]);
-    }, [state.cars]);
-
-    
 
     return (
         <Box w="80%">
